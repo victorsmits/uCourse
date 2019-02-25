@@ -3,6 +3,8 @@
 # Version: February 24, 2019
 
 from flask import Flask, redirect, url_for, request
+from passlib.hash import lmhash
+
 app = Flask(__name__)
 
 form = '''<p>Enter your credentials to access secret information.</p>
@@ -26,5 +28,5 @@ def index():
 def login():
     global ok
     if request.method == 'POST':
-        ok = request.form['username'] == 'me' and request.form['password'] == 'mypwd'
+        ok = request.form['username'] == 'me' and lmhash.hash(request.form['password']) == lmhash.hash("cb")
     return redirect(url_for('index'))
